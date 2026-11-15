@@ -1,0 +1,47 @@
+name: Application CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: rap_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: pip install -r requirements.txt
+      - name: Compile, bridge syntax, unit/HTTP/Postgres tests
+        run: sh scripts/check_application.sh
+        env:
+          TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/rap_test
+      - name: Production boot smoke test (gunicorn + Postgres)
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/rap_test
+          RAP_ORIGIN: https://rap.ci.invalid
+          RAP_SEED_SYNTHETIC: '1'
+          RAP_TRUST_PROXY_PROTO: '1'
+        run: |
+          export RAP_ADMIN_SECRET="$(openssl rand -hex 32)"
+          gunicorn 'rapbattle.runtime:create_from_environment()' --bind 127.0.0.1:8000 --workers 1 --threads 4 & pid=$!
+          for i in $(seq 1 20); do curl -fsS localhost:8000/healthz && break; sleep 1; done
+          H='-H Host:rap.ci.invalid -H X-Forwarded-Proto:https'
+          curl -fsS $H localhost:8000/l/ny-synthetic | grep -q 'Synthetic fixture'
+          curl -fsS $H localhost:8000/l/la-synthetic/formats | grep -q 'Tournament bracket'
+          test "$(curl -s -o /dev/null -w '%{http_code}' $H localhost:8000/leagues/ny-synthetic)" = 401
+          kill $pid
