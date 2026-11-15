@@ -111,3 +111,17 @@ Test both payment-enabled and no-payment modes, mobile/keyboard accessibility, p
 ## Recovery status
 
 The original numbered plan and product constraints are recoverable; external API selections, credential readiness and present-day deployment cannot be certified from a past conversation. Do not infer current availability from this handoff document.
+
+## Current implementation status (2026-11-15)
+
+| Unit | Status | Evidence / blocker |
+| --- | --- | --- |
+| RAP-01 | Implemented (prototype) — upstream engine adapter verification pending | PR #10 (from #6). Labelled stub identity until the pinned engine checkout is available. |
+| RAP-02 | Implemented | PR #10. Per-league branding, contrast enforcement, custom-domain Host routing. |
+| RAP-03 | Implemented | PR #10 (from #7). |
+| RAP-04 | Implemented | PR #10. Five presets, timers, tie/forfeit lifecycle, brackets. |
+| RAP-05 | Pending — owner gate | Artist consent/privacy policy required before any artist personal data. |
+| RAP-06, RAP-10, RAP-11 | Pending — owner gate | Payment provider and revenue-share/sponsor policy required. |
+| RAP-07..09, RAP-12 | Pending | Not started. |
+
+Deployment details: [DEPLOYMENT.md](DEPLOYMENT.md). Synthetic NY/Atlanta/LA leagues are fixtures only.
