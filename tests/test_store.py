@@ -38,7 +38,7 @@ class StoreTests(unittest.TestCase):
     def test_schema_survives_reopen_and_future_version_is_rejected(self):
         self.assertTrue(Store(self.path).healthy())
         with sqlite3.connect(self.path) as db:
-            db.execute("PRAGMA user_version=2")
+            db.execute("PRAGMA user_version=3")
         with self.assertRaisesRegex(ValueError,"Unsupported"):
             Store(self.path)
 

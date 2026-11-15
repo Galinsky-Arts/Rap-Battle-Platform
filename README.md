@@ -16,3 +16,7 @@ RAP-01 implementation and operation: [docs/RAP_01_SHELL.md](docs/RAP_01_SHELL.md
 Run `sh scripts/check_application.sh` for the isolated application checks.
 The shell's fixtures are synthetic; live engine interoperability and production deployment remain unverified.
 
+
+## Deployable slice
+
+RAP-01..04 (tenant shell, white-label branding, battle terminology, battle presets) run as one Python service on Postgres with three clearly labelled synthetic leagues. See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). Live-Competition-Engine is not yet connected; identity uses a labelled prototype stub.
