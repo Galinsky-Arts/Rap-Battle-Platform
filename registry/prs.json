@@ -15,7 +15,8 @@
       "title": "Multi-tenant application shell",
       "origin": "original",
       "prs": [
-        10
+        10,
+        11
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -31,7 +32,8 @@
       "title": "White-label design",
       "origin": "original",
       "prs": [
-        10
+        10,
+        11
       ],
       "dependsOn": [
         "RAP-01"
@@ -44,7 +46,8 @@
       "title": "Battle terminology",
       "origin": "original",
       "prs": [
-        10
+        10,
+        11
       ],
       "dependsOn": [
         "RAP-02"
@@ -60,7 +63,8 @@
       "title": "Battle presets",
       "origin": "original",
       "prs": [
-        10
+        10,
+        11
       ],
       "dependsOn": [
         "RAP-03"
@@ -72,7 +76,9 @@
       "id": "RAP-05",
       "title": "Artist profiles",
       "origin": "original",
-      "prs": [],
+      "prs": [
+        11
+      ],
       "dependsOn": [
         "RAP-04"
       ],
@@ -85,7 +91,9 @@
       "id": "RAP-06",
       "title": "Creator economy",
       "origin": "original",
-      "prs": [],
+      "prs": [
+        11
+      ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [
@@ -96,7 +104,9 @@
       "id": "RAP-07",
       "title": "Local league administration",
       "origin": "original",
-      "prs": [],
+      "prs": [
+        11
+      ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": []
@@ -105,7 +115,9 @@
       "id": "RAP-08",
       "title": "League discovery",
       "origin": "original",
-      "prs": [],
+      "prs": [
+        11
+      ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": []
@@ -114,7 +126,9 @@
       "id": "RAP-09",
       "title": "Rankings and records",
       "origin": "original",
-      "prs": [],
+      "prs": [
+        11
+      ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": []
@@ -123,7 +137,9 @@
       "id": "RAP-10",
       "title": "Revenue sharing",
       "origin": "original",
-      "prs": [],
+      "prs": [
+        11
+      ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [
@@ -134,7 +150,9 @@
       "id": "RAP-11",
       "title": "Sponsorship package",
       "origin": "original",
-      "prs": [],
+      "prs": [
+        11
+      ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": []
@@ -143,7 +161,9 @@
       "id": "RAP-12",
       "title": "Production validation",
       "origin": "original",
-      "prs": [],
+      "prs": [
+        11
+      ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [
