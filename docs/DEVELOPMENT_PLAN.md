@@ -112,16 +112,19 @@ Test both payment-enabled and no-payment modes, mobile/keyboard accessibility, p
 
 The original numbered plan and product constraints are recoverable; external API selections, credential readiness and present-day deployment cannot be certified from a past conversation. Do not infer current availability from this handoff document.
 
-## Current implementation status (2026-11-15)
+## Current implementation status (2026-11-17)
 
-| Unit | Status | Evidence / blocker |
+| Unit | Status | Evidence / remaining |
 | --- | --- | --- |
-| RAP-01 | Implemented (prototype) — upstream engine adapter verification pending | PR #10 (from #6). Labelled stub identity until the pinned engine checkout is available. |
-| RAP-02 | Implemented | PR #10. Per-league branding, contrast enforcement, custom-domain Host routing. |
-| RAP-03 | Implemented | PR #10 (from #7). |
-| RAP-04 | Implemented | PR #10. Five presets, timers, tie/forfeit lifecycle, brackets. |
-| RAP-05 | Pending — owner gate | Artist consent/privacy policy required before any artist personal data. |
-| RAP-06, RAP-10, RAP-11 | Pending — owner gate | Payment provider and revenue-share/sponsor policy required. |
-| RAP-07..09, RAP-12 | Pending | Not started. |
+| RAP-01 | Implemented | Real accounts (argon2id, sessions, CSRF, origin check, rate limits, platform admin + per-league producer/judge roles). `RAP_ADMIN_SECRET` is the bootstrap admin and still signs the legacy per-league API tokens. Built-in engine behind `rapbattle/engine/builtin.py` (`ENGINE_METHODS`); an external engine adapter fails closed until a Live-Competition-Engine client exists. |
+| RAP-02..04 | Implemented | Unchanged; presets now drive real events. |
+| RAP-05 | Implemented, closed by default | Emcee profiles (bio, hometown, style, media links, capped photo uploads in Postgres, visibility, consent capture with policy version), past battles and stats, promoter-only visibility. Sign-up opens only after an admin enters the privacy policy. |
+| RAP-06 | Implemented, payments off | Tips, 30-day memberships, paid media, payout consent; Stripe Checkout end to end, enabled only when `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` exist. |
+| RAP-07 | Implemented | Calendar, staff, seasons, lineup requests, guest emcees, seeding, judges, brackets, moderation, contracts, live battle console. |
+| RAP-08 | Implemented | `/leagues` discovery with search and region filters, listed/unlisted leagues, branded league pages. |
+| RAP-09 | Implemented | Results history, season standings with configurable points, style filter, standings-based seeding, disputes and audited corrections. |
+| RAP-10 | Implemented, payments off | Orders, ledger, per-league split rules with defaults, refunds and chargebacks reversed proportionally via Stripe webhooks, settlements with SHA-256 evidence and held payouts without consent. |
+| RAP-11 | Implemented | Sponsors, placement inventory, approvals, per-league opt-in, invoices (Stripe or recorded offline payment), impression/click reports. |
+| RAP-12 | Implemented (scripted) | `tests/test_web_e2e.py` runs three branded leagues, one-round and three-round battles with judges and crowd votes, overtime, bracket, forfeit, dispute, sponsorship, payment-off and payment-on (Stripe API mocked in tests only), split receipts, refunds, settlements and tenant isolation on Postgres in CI. Not done: a live event with real artists/streams, real Stripe transactions, and an upstream engine connection. |
 
 Deployment details: [DEPLOYMENT.md](DEPLOYMENT.md). Synthetic NY/Atlanta/LA leagues are fixtures only.
