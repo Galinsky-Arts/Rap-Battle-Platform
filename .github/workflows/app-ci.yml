@@ -38,10 +38,15 @@ jobs:
           RAP_TRUST_PROXY_PROTO: '1'
         run: |
           export RAP_ADMIN_SECRET="$(openssl rand -hex 32)"
+          export RAP_SECRET_KEY="$(openssl rand -hex 32)"
           gunicorn 'rapbattle.runtime:create_from_environment()' --bind 127.0.0.1:8000 --workers 1 --threads 4 & pid=$!
           for i in $(seq 1 20); do curl -fsS localhost:8000/healthz && break; sleep 1; done
           H='-H Host:rap.ci.invalid -H X-Forwarded-Proto:https'
           curl -fsS $H localhost:8000/l/ny-synthetic | grep -q 'Synthetic fixture'
           curl -fsS $H localhost:8000/l/la-synthetic/formats | grep -q 'Tournament bracket'
           test "$(curl -s -o /dev/null -w '%{http_code}' $H localhost:8000/leagues/ny-synthetic)" = 401
+          curl -fsS localhost:8000/healthz | grep -q '"database": "ok"'
+          curl -fsS $H localhost:8000/artist/signup | grep -q 'not open'
+          curl -fsS $H localhost:8000/leagues | grep -q 'Harbor Lights'
+          test "$(curl -s -o /dev/null -w '%{http_code}' $H localhost:8000/admin)" = 303
           kill $pid

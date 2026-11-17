@@ -20,7 +20,7 @@
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [
-        "Replace the labelled prototype StubOperatorEngine with the pinned Live-Competition-Engine NodeEngine adapter and verify it against a scoped engine database (upstream repository not accessible to this deployment)"
+        "Optional: connect an external Live-Competition-Engine through rapbattle/engine (built-in engine in use)"
       ],
       "contributingPrs": [
         6
@@ -78,7 +78,7 @@
       ],
       "externalDependencies": [],
       "externalPrerequisites": [
-        "Owner-approved artist consent/privacy policy (operator identity, contact, retention, media rights) before any artist personal data is collected"
+        "Owner-approved privacy policy entered in Admin \u2192 Settings; emcee sign-up stays closed until then"
       ]
     },
     {
@@ -89,7 +89,7 @@
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [
-        "Owner selection of a payment provider and platform/tenant revenue-share policy"
+        "Stripe account keys (STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET); payments stay off until set"
       ]
     },
     {
@@ -127,7 +127,7 @@
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [
-        "Owner selection of a payment provider, settlement and refund/chargeback policy"
+        "Stripe account keys and owner confirmation of default revenue splits; payments stay off until set"
       ]
     },
     {
@@ -146,7 +146,9 @@
       "prs": [],
       "dependsOn": [],
       "externalDependencies": [],
-      "externalPrerequisites": []
+      "externalPrerequisites": [
+        "Live realistic event with real artists, streams and payments"
+      ]
     }
   ],
   "pullRequests": []

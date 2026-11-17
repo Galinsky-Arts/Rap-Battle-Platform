@@ -15,7 +15,7 @@ class PostgresStoreTests(unittest.TestCase):
         import psycopg
         from rapbattle.store import PostgresStore
         with psycopg.connect(URL, autocommit=True) as db:
-            db.execute("DROP TABLE IF EXISTS league_presets, league_branding, leagues, rap_schema_version")
+            db.execute("DROP SCHEMA public CASCADE; CREATE SCHEMA public")
         self.store = PostgresStore(URL)
         seed_synthetic(self.store)
         seed_synthetic(self.store)

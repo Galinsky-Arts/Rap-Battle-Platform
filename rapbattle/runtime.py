@@ -82,6 +82,36 @@ def resolve_origin(env):
     return origin.rstrip("/")
 
 
+def ensure_bootstrap_admin(db, secret):
+    """RAP_ADMIN_SECRET doubles as the bootstrap admin password (sign in with email "admin")."""
+    from .web.security import hash_password, verify_password
+    row = db.one("SELECT * FROM users WHERE email='admin'")
+    if not (isinstance(secret, str) and len(secret) >= 32):
+        if row:
+            db.run("UPDATE users SET disabled=true WHERE id=%s", (row["id"],))
+        return None
+    if not row:
+        row = db.one("INSERT INTO users(email,password_hash,display_name,bootstrap) VALUES ('admin',%s,'Bootstrap admin',true) RETURNING *", (hash_password(secret),))
+    elif row["disabled"] or not verify_password(row["password_hash"], secret):
+        db.run("UPDATE users SET password_hash=%s, disabled=false, bootstrap=true WHERE id=%s", (hash_password(secret), row["id"]))
+    db.run("INSERT INTO user_roles(user_id,role) VALUES (%s,'admin') ON CONFLICT DO NOTHING", (row["id"],))
+    return row["id"]
+
+
+def build_web_app(env, store, legacy, origin, *, stripe_opener=None):
+    from .web.db import Db
+    from .web.app import WebApp
+    from .engine.builtin import select_engine
+    from .payments import Stripe
+    db = Db(env["DATABASE_URL"])
+    db.migrate()
+    ensure_bootstrap_admin(db, env.get("RAP_ADMIN_SECRET"))
+    engine = select_engine(env.get("RAP_ENGINE") or "builtin", db, env.get("RAP_ENGINE_ORIGIN"))
+    stripe = Stripe(env.get("STRIPE_SECRET_KEY"), env.get("STRIPE_WEBHOOK_SECRET"), opener=stripe_opener)
+    return WebApp(db=db, store=store, engine=engine, origin=origin, legacy=legacy, secret=env.get("RAP_SECRET_KEY") or env.get("RAP_ADMIN_SECRET"),
+                  trust_proxy=env.get("RAP_TRUST_PROXY_PROTO") == "1", stripe=stripe)
+
+
 def create_from_environment(environ=None):
     env = os.environ if environ is None else environ
     origin = resolve_origin(env)
@@ -89,6 +119,8 @@ def create_from_environment(environ=None):
     if env.get("RAP_SEED_SYNTHETIC") == "1":
         seed_synthetic(store)
     app = Application(store, origin, create_engine(env))
+    if env.get("DATABASE_URL"):
+        app = build_web_app(env, store, app, origin)
     return TrustedProxyScheme(app) if env.get("RAP_TRUST_PROXY_PROTO") == "1" else app
 
 
